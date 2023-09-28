@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class DemoApplication {
 
     public static void main(String[] args) {
+        if(args!=null)
+            for(String arg:args)
+                System.out.println(arg);
         SpringApplication.run(DemoApplication.class, args);
     }
 

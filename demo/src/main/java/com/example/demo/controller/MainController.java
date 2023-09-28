@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -22,12 +23,13 @@ public class MainController {
     @Autowired
     private ProductsService productsService;
 
-    //    TODO: concerning the logs
+    //    : concerning the logs
     private Logger logger = LoggerFactory.getLogger(MainController.class);
 
     @GetMapping(value = {"/show_products", "/show_products/{id}"})
     public ResponseEntity<?> products(@PathVariable(required = false) String id, @RequestParam(defaultValue = "") String searchKey) {
         if (id == null || id.isBlank() || id.isEmpty()) {
+            logger.info("Products list displayed");
             return new ResponseEntity<>(productsService.getAllProducts(searchKey), HttpStatus.OK);
         } else {
             //: on returning null, return exception and in it say product not present
@@ -39,8 +41,10 @@ public class MainController {
     //    :make it accept more than one product at a time. See the format for it.
     //    @Valid to validate the data
     @PostMapping(value = "/add", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Product> addProduct(@Valid @RequestBody Product prodObj) {
-        return new ResponseEntity<>(productsService.saveProduct(prodObj), HttpStatus.CREATED);
+    public ResponseEntity<Product> addProduct(
+//            @Validated({Product.ValidationGroupTwo.class})
+            @Valid @RequestBody Product prodObj) {
+        return new ResponseEntity<>(productsService.saveProduct(prodObj, false), HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/addAll", consumes = {MediaType.APPLICATION_JSON_VALUE})
@@ -51,12 +55,14 @@ public class MainController {
 
     @PutMapping(value = "/update/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Product> updateProduct(@RequestBody Product product, @PathVariable String id) {
+        logger.info("Product updated successfully");
         return new ResponseEntity<>(productsService.updateProduct(id, product), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<List<Product>> deleteProduct(@PathVariable String id) {
 //: say custom error if product not found using custom exception
+        logger.info("Product deleted successfully");
         return new ResponseEntity<>(productsService.deleteProduct(id), HttpStatus.ACCEPTED);
     }
 
@@ -78,9 +84,9 @@ public class MainController {
 //
 
 //    NEW TASKS
-//    TODO: data validation of json responses(can be done using annotation)
-//    TODO: ->handle annotation failure error.
-//    TODO: Logging/logs concepts.
+//    : data validation of json responses(can be done using annotation)
+//    : ->handle annotation failure error.
+//    : Logging/logs concepts.
 
 //    : add /search based on name, desc
 //    TODO: JUnit testcases
@@ -93,7 +99,9 @@ public class MainController {
 }
 
 //  27/09/23
-// TODO: learn -> spring active profiles
-//  TODO: learn-> queueing mechanism-rabita mq, r kafka.
-//  TODO: use command line arguments <- spring boot
-//  TODO: add a list of strings and try to validate if each value is not empty.
+// :  learn-> spring active profiles
+//  TODO: learn-> queueing mechanism-rabitMQ, r kafka.
+//  TODO: use command line arguments <- spring boot <- connection done but data not accessible
+//  : add a list of strings and try to validate if each value is not empty.
+//  : on updating a product, createdAt becoming null. Fix it.
+//  : on validating, id required so skip its validation.

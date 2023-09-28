@@ -27,9 +27,10 @@ public class ProductsService {
         return products.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
     }
 
-    public Product saveProduct(Product product) {
+    public Product saveProduct(Product product, boolean update) {
 //      check if already present. Then do not add again. Though this would have just updated for that particular entry
-        if (getProductById(product.getId()) != null)
+//        also check if id is given because it is auto generated
+        if (!update && product.getId()!=null && getProductById(product.getId()) != null)
             throw new ProductAlreadyExistsException(product.getId());
         products.save(product);
         return getProductById(product.getId());
@@ -75,7 +76,7 @@ public class ProductsService {
 
         newPr.setCreatedAt(oldPr.getCreatedAt());
 
-        saveProduct(newPr);
+        saveProduct(newPr, true);
         return getProductById(id);
     }
 }
