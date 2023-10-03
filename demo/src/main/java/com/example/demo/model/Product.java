@@ -1,57 +1,67 @@
 package com.example.demo.model;
 
-import com.mongodb.lang.NonNull;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Immutable;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.lang.reflect.Array;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 import java.util.List;
 
 
+@XmlRootElement(name="product")
 @Getter
 @Setter
 @Document(collection = "commerce")
 public class Product {
 
-    public interface ValidationGroupOne{};
-    public interface ValidationGroupTwo{};
-
+//    @XmlAttribute(name = "id")
     @Id
-//    @NotBlank(groups = ValidationGroupOne.class)
     private String id;
 
 
-    @NotBlank(message = "name may not be empty"
-//            , groups = ValidationGroupTwo.class
-            )
+//    @XmlElement(name = "name")
+    @NotNull(message = "Name may not be null")
+    @NotBlank(message = "Name may not be empty")
     private String name;
 
-    @NotBlank(message = "description may not be empty")
+//    @XmlAttribute
+    @NotNull(message = "Description may not be null")
+    @NotBlank(message = "Description may not be empty")
     private String description;
 
-    @NotNull
-    @Builder.Default
-    private int quantity=0;
+//    @XmlElement
+    @NotNull(message = "Quantity may not be empty")
+    @Positive(message = "Quantity may not be negative")
+    private int quantity;
 
-    @NotNull
-    @Builder.Default
-    private double price=0;
+//    @XmlElement
+    @NotNull(message = "Price may not be null")
+    @Positive(message = "Price may not be negative")
+    private double price;
 
-    @NotNull
-    private List<@NotEmpty String> images;
+//    @XmlElement
+    @NotNull(message = "Images may not be null")
+    @NotEmpty(message = "Images may not be empty")
+    private List<@NotEmpty(message = "Image may not be empty") String> images;
 
+//    @XmlElement
     @CreatedDate
+    @Immutable
     private Date createdAt;
 
+//    @XmlElement
     @LastModifiedDate
     private Date modifiedAt;
 }

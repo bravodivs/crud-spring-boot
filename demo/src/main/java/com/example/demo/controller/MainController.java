@@ -1,21 +1,19 @@
 package com.example.demo.controller;
 
-import com.example.demo.exception.ErrorResponse;
-import com.example.demo.exception.CustomException;
+
 import com.example.demo.model.Product;
 import com.example.demo.service.ProductsService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
+
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -23,22 +21,18 @@ public class MainController {
     @Autowired
     private ProductsService productsService;
 
-    //    : concerning the logs
-    private Logger logger = LoggerFactory.getLogger(MainController.class);
+//    private  final Logger logger = LoggerFactory.getLogger(MainController.class);
 
     @GetMapping(value = {"/show_products", "/show_products/{id}"})
-    public ResponseEntity<?> products(@PathVariable(required = false) String id, @RequestParam(defaultValue = "") String searchKey) {
+    public ResponseEntity<Object> products(@PathVariable(required = false) String id, @RequestParam(defaultValue = "") String searchKey) {
         if (id == null || id.isBlank() || id.isEmpty()) {
-            logger.info("Products list displayed");
+//            logger.info("Products list displayed");
             return new ResponseEntity<>(productsService.getAllProducts(searchKey), HttpStatus.OK);
         } else {
-            //: on returning null, return exception and in it say product not present
             return new ResponseEntity<>(productsService.getProductById(id), HttpStatus.OK);
         }
     }
 
-    //    receive a json data object and return the list as POJO.
-    //    :make it accept more than one product at a time. See the format for it.
     //    @Valid to validate the data
     @PostMapping(value = "/add", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Product> addProduct(
@@ -55,20 +49,48 @@ public class MainController {
 
     @PutMapping(value = "/update/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Product> updateProduct(@RequestBody Product product, @PathVariable String id) {
-        logger.info("Product updated successfully");
+//        logger.info("Product updated successfully");
         return new ResponseEntity<>(productsService.updateProduct(id, product), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<List<Product>> deleteProduct(@PathVariable String id) {
-//: say custom error if product not found using custom exception
-        logger.info("Product deleted successfully");
-        return new ResponseEntity<>(productsService.deleteProduct(id), HttpStatus.ACCEPTED);
+    public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
+//        TODO: check if deleted then only log and return
+//        logger.info("Product deleted successfully");
+//        return new ResponseEntity<>(productsService.deleteProduct(id), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    @DeleteMapping("/delete_all")
+    public ResponseEntity<Void> deleteAllProducts(){
+        productsService.deleteAllProducts();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/check")
-    public ResponseEntity<Product> check_exception() {
-        throw new CustomException("checking the error", HttpStatus.ALREADY_REPORTED, "2");
+
+//    @GetMapping("/check")
+//    public ResponseEntity<Product> check_exception() {
+//        throw new CustomException("checking the error", HttpStatus.ALREADY_REPORTED);
+//    }
+
+    @RequestMapping("/bulkExport")
+    public ResponseEntity<String> exportFile(HttpServletResponse response, @RequestParam String type) throws IOException {
+//        TODO: make another class in service that directs to required method after chking if list is empty
+        if (type.equals("csv")) {
+            productsService.exportCsv(response);
+            return new ResponseEntity<>("File generated", HttpStatus.OK);
+        } else if (type.equals("json")) {
+            String res = productsService.exportJson(response);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        else if(type.equals("pdf")){
+            productsService.exportPdf(response);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        else if (type.equals("xml")){
+            productsService.exportXml(response);
+            return  new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>("File type not valid", HttpStatus.BAD_REQUEST);
     }
 
 //    REVIEW COMMENTS
@@ -89,7 +111,7 @@ public class MainController {
 //    : Logging/logs concepts.
 
 //    : add /search based on name, desc
-//    TODO: JUnit testcases
+//    : JUnit testcases
 
 //    26/9/23 comments
 //    : use annotation for date created and modified. dont do it manually
@@ -100,8 +122,41 @@ public class MainController {
 
 //  27/09/23
 // :  learn-> spring active profiles
-//  TODO: learn-> queueing mechanism-rabitMQ, r kafka.
-//  TODO: use command line arguments <- spring boot <- connection done but data not accessible
+//  : learn-> queueing mechanism-rabitMQ, r kafka. <- decoupling, data reliablity.
+//  : use command line arguments <- spring boot <- connection done but data not accessible
 //  : add a list of strings and try to validate if each value is not empty.
 //  : on updating a product, createdAt becoming null. Fix it.
 //  : on validating, id required so skip its validation.
+
+// 28/09/2023
+//  : createdAt shud be non editable <- annotation
+// : data validation of fields.
+//  : for valdation failure, return a json response of errors. bind all the errors together and print
+//  : more detailed flow of logs. more coverage in exceptions.
+
+//29/9/2023
+//: add validation for addAll, update(manually), for list of products
+//TODO: apt logging. more detailed.
+//TODO: test cases(2-contr, all-service), follow name stds, test case stds, package struct
+//TODO: resolve sonarLint issues
+//TODO: have DTO apart from DAO. use annotations in DTO.
+//: delete unused classes after checking.
+
+//WEEK 2 TASKS
+//TODO: {Add bulk creation feature for products -
+//      create a route which accepts list of products in a form of CSV file and add it to DB after validation.
+//      ->/bulkImport
+//      ->take in a csv file only. If other filetype then throw error.
+//      ->A csv file will have head as column names, and each row as data.
+//      ->Object mapper will check the data type of each cell while converting to json
+//      ->After that validate data such name not empty, price not negative.
+//      ->finally, using /addAll, save to database. Actually the saveAll method too ,checks for validations}
+//TODO: {Add export feature for product detail -
+//      add a route which accepts a file format (CSV, PDF, JSON & XML), and downloads an export file of all the products in the requested format.
+//      ->/bulkExport?fileType=given
+//      ->write logic for in this order csv->json->pdf->xml
+//      ->mappers are there for all types. Jackson libs probably.
+//      ->If product list empty then dont create file. Just print as no product in list.
+//      ->}
+
+//TODO: util class in a util package?? for what but??

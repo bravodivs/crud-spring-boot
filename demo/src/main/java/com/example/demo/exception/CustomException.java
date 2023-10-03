@@ -14,14 +14,14 @@ public class CustomException extends RuntimeException{
     public CustomException(){
         super();
     }
-    public CustomException(String id){
+    public CustomException(String message){
         super();
-        this.id=id;
+        this.message=message;
+        this.status=HttpStatus.CONFLICT;
     }
-    public CustomException(String message, HttpStatus status, String id){
+    public CustomException(String message, HttpStatus status){
         super(message);
         this.message=message;
         this.status = status;
-        this.id=id;
     }
 }
