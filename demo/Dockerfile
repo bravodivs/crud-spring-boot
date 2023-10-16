@@ -11,7 +11,8 @@ ADD target/demo-0.0.1-SNAPSHOT.jar product-service.jar
 EXPOSE 8080
 
 # Define environment variables (if necessary)
-ENV SPRING_DATA_MONGODB_URI mongodb://localhost:27017/comdemo
+# give it explicitly while running the container
+# ENV SPRING_DATA_MONGODB_URI mongodb://localhost:27017/comdemo
 
 # Run the application when the container starts
 CMD ["java", "-jar", "product-service.jar"]
