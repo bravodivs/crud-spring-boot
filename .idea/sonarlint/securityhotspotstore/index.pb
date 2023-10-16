@@ -15,8 +15,6 @@ Bdemo/src/main/java/com/example/demo/exception/CustomException.java,9\2\921d982
 demo/mvnw.cmd,4\3\437e70af9793a466618b92893f8c7d9117237271
 <
 demoLogs.log,f\2\f2d90c28f4131a6e6db8575ab186471f61555e74
-l
-<demo/src/main/java/com/example/demo/MongoAuditingConfig.java,9\7\9724695f96a94a7b394ea313f79b7757107e1f11
 m
 =demo/src/test/java/com/example/demo/DemoApplicationTests.java,a\6\a6850b6808e4fe1d7176852192046945dc099721
 u
@@ -35,8 +33,6 @@ r
 Bdemo/src/main/java/com/example/demo/controller/MainController.java,1\7\17e4d93005407f67ed8dec1a392ce89750e1e408
 >
 demo/TODOs.txt,f\b\fbbb51876f76e6186402eebe6023d92c905338a8
-A
-demo/demoLogs.log,7\a\7a4d5c3ac395356085999f9e5a79d677f3a5f490
 i
 9demo/src/main/java/com/example/demo/model/ProductDto.java,0\3\03c546ef47f0d683f3f2af716640d5ff03cead1a
 i
@@ -71,3 +67,15 @@ q
 Ademo/src/test/java/com/example/demo/util/CsvExporterUtilTest.java,4\d\4d672382b5b43f78524dcebf9c4cdf5a5aeb3c6f
 }
 Mdemo/src/test/java/com/example/demo/exception/GlobalExceptionHandlerTest.java,6\4\64a5f4128faca8add060cb9a5597f32bb3890948
+8
+demo/csv,4\a\4af1897767b15b5e02938a3f467690e8f11905d5
+E
+demo/uploads/try2.csv,f\b\fb17031d72ad1be855f8ab72e30f141da23e9ce7
+]
+-demo/src/test/java/applicationtest.properties,c\d\cd35e6238c09394a79f7ccf3c0b97e50b2ceecd8
+y
+Idemo/src/test/java/com/example/demo/service/ProductImportServiceTest.java,1\5\15a92eca8945d95872ecb1e4336e69786c4b5a0f
+y
+Idemo/src/test/java/com/example/demo/service/ProductExportServiceTest.java,c\9\c92dd0362aab1335c7e8cf90a6c3b7cdc5e27850
+=
+demo/test.csv,1\2\1231f8879e8ccb9eab03dacb9f27d98ce346f619

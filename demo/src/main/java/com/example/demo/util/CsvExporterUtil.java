@@ -18,11 +18,13 @@ import java.util.List;
 public class CsvExporterUtil {
     private static final Logger logger = LoggerFactory.getLogger(CsvExporterUtil.class);
 
-    private CsvExporterUtil(){}
+    private CsvExporterUtil() {
+    }
+
     public static File export(List<String[]> dataArray, String filename) {
         File file = new File(filename);
         try (FileWriter outputFile = new FileWriter(file);
-             CSVWriter writer = new CSVWriter(outputFile);
+             CSVWriter writer = new CSVWriter(outputFile)
         ) {
             if (file.createNewFile()) {
                 logger.info("File created with name {}", filename);

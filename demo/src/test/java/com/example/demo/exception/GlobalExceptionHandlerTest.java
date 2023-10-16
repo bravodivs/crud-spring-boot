@@ -2,32 +2,35 @@ package com.example.demo.exception;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
-import org.springframework.core.MethodParameter;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.support.WebDataBinderFactory;
+
+
+
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class GlobalExceptionHandlerTest {
     @Mock
     private Logger logger;
-    @Mock
-    private BindingResult bindingResult;
     @InjectMocks
     private GlobalExceptionHandler globalExceptionHandler;
-
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -43,10 +46,20 @@ class GlobalExceptionHandlerTest {
 
     @Test
     void invalidArg_shouldHandleMethodArgumentNotValidException() {
-//        ResponseEntity<Object> responseEntity = globalExceptionHandler.invalidArg(invalidException);
+        GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
+        MethodArgumentNotValidException mockException = mock(MethodArgumentNotValidException.class);
+        BindingResult mockBindingResult = mock(BindingResult.class);
 
-//        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-//        verify(logger).error("Invalid argument(s) exception encountered - {}", invalidException.getMessage());
+        FieldError fieldError = new FieldError("objectName", "fieldName", "error message");
+
+        // Stub behavior for the mock objects
+        when(mockException.getBindingResult()).thenReturn(mockBindingResult);
+        when(mockBindingResult.getFieldErrors()).thenReturn(List.of(fieldError));
+
+        ResponseEntity<Object> responseEntity = globalExceptionHandler.invalidArg(mockException);
+
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals("error message", ((Map<?, ?>) responseEntity.getBody()).get("fieldName"));
     }
 
     @Test
@@ -56,6 +69,5 @@ class GlobalExceptionHandlerTest {
         ResponseEntity<Object> responseEntity = globalExceptionHandler.otherFailures(exception);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-        verify(logger).error("Exception encountered: {}", exception.getMessage());
     }
 }

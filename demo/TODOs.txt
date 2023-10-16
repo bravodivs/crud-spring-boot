@@ -73,16 +73,14 @@
 : move csv and xml methods to util. make them dynamic using List<String[]> and List<Object>
  :reconfigure pdf export function
 
-TODO: learn-> authentication-authorization, JWT, SQL, spring security, spring filters.
-TODO: learn-> containerize the application
+: learn-> authentication-authorization, JWT, SQL, spring security, spring filters.
+: learn-> containerize the application
 
 :PERSISTING ISSUES-
 : export csv working but image field is faulty. writing only one value. <- BECAUSE ',' IS THE DELIMITER.
 : file eiter not getting created neither deleted
 : transfer of methods such as of exportcsv and export xml to util classes.
 : '[' and ']' in exported files. wtf.
-use DAO only while fetching/saving from/to db directly, i.e. the repository methods. in all the other places of data flow, dto only should be used.
-all the data validation must be in DTO. DAO should only have annotations for field type, such as @ID, @CREATED etc.
 
 
 :create all the reusable constants such as "json"

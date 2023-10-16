@@ -6,6 +6,7 @@ import com.example.demo.util.CsvExporterUtil;
 import com.example.demo.util.JsonExporterUtil;
 import com.example.demo.util.PdfExporter;
 import com.example.demo.util.XmlExporter;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,10 @@ public class ProductExportService {
     @Autowired
     private XmlExporter xmlExporter;
     @Value("${file.defaultExportName}")
+    @Setter
     private String defaultFileNameTemplate;
     @Value("${file.dateFormat}")
+    @Setter
     private String dateFormat;
     private String fileExtension;
 

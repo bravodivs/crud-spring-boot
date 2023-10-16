@@ -19,24 +19,23 @@ import java.util.List;
 
 @Component
 public class XmlExporter {
+    private final Logger logger = LoggerFactory.getLogger(XmlExporter.class);
     private File file;
     @Value("${file.defaultExportName}")
     private String defaultFileNameTemplate;
     @Value("${file.dateFormat}")
     private String dateFormat;
-    private final Logger logger = LoggerFactory.getLogger(XmlExporter.class);
+
     public File export(List<ProductDto> productDtoList) {
         String filename = getExportFileName();
         file = new File(filename);
+
+//: try change <images><image>...</images>
         try {
             if (file.createNewFile()) {
                 logger.info("File created with name {}", filename);
             }
-        } catch (Exception e) {
-            throw new CustomException(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
-//: try change <images><image>...</images>
-        try {
+
             JAXBContext context = JAXBContext.newInstance(ProductDtoListWrapper.class);
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -44,7 +43,7 @@ public class XmlExporter {
             wrapper.setProductDtoList(productDtoList);
             marshaller.marshal(wrapper, new FileOutputStream(file));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
             throw new CustomException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return file;

@@ -63,7 +63,7 @@ public class PdfExporter {
             table.addCell(productDto.getDescription());
             table.addCell(String.valueOf(productDto.getPrice()));
             table.addCell(String.valueOf(productDto.getQuantity()));
-            table.addCell(String.valueOf(productDto.getImages()));
+            table.addCell(String.join(", ", productDto.getImages()));
             table.addCell(String.valueOf(productDto.getCreatedAt()));
             table.addCell(String.valueOf(productDto.getModifiedAt()));
         }
@@ -73,14 +73,12 @@ public class PdfExporter {
         this.productDtoList = productDtoList;
         String filename = getExportFileName();
         file = new File(filename);
-        try {
+
+        try (Document document = new Document(PageSize.A4.rotate())) {
             if (file.createNewFile()) {
                 logger.info("File created with name {}", filename);
             }
-        } catch (Exception e) {
-            throw new CustomException(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
-        try (Document document = new Document(PageSize.A4.rotate())) {
+
             FileOutputStream outputStream = new FileOutputStream(file);
             PdfWriter.getInstance(document, outputStream);
 

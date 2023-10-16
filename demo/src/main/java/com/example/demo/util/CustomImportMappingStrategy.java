@@ -6,7 +6,6 @@ import com.opencsv.exceptions.CsvBeanIntrospectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -19,13 +18,13 @@ private static final Logger logger = LoggerFactory.getLogger(CustomImportMapping
     @Override
     public T populateNewBean(String[] line) throws CsvBeanIntrospectionException{
         // Manually map CSV columns to Product fields and create a Product object
-        logger.info(Arrays.toString(line));
         ProductDto productDto = new ProductDto();
         productDto.setName(line[0]);
         productDto.setDescription(line[1]);
         productDto.setPrice(Double.parseDouble(line[2]));
         productDto.setQuantity(Integer.parseInt(line[3]));
         productDto.setImages(List.of(line[4].split(",\\s*")));
+        logger.info("Product mapped");
         return (T) productDto;
     }
 }

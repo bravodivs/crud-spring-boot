@@ -15,7 +15,6 @@ public class ProductUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(ProductUtils.class);
 
-    //    every util class must have a private constructor
     private ProductUtils() {
     }
 

@@ -4,6 +4,7 @@ import com.example.demo.exception.CustomException;
 import com.example.demo.model.ProductDto;
 import com.example.demo.util.CustomImportMappingStrategy;
 import com.opencsv.bean.CsvToBeanBuilder;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,7 @@ public class ProductImportService {
     private File file;
     private Path destinationPath;
     @Value("${file.upload-dir}")
+    @Setter
     private String uploadDirectory;
 
     private void importFile(MultipartFile multipartFile) {

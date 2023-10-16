@@ -39,7 +39,6 @@ public class MainController {
         return new ResponseEntity<>(productService.saveAllProducts(productDtoList), HttpStatus.CREATED);
     }
 
-
     @PutMapping(value = "/update/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ProductDto> updateProduct(@RequestBody ProductDto productDto , @PathVariable String id) {
         return new ResponseEntity<>(productService.updateProduct(id, productDto), HttpStatus.CREATED);

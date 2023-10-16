@@ -31,8 +31,13 @@ public class ProductService {
     ProductExportService productExportService;
 
     public List<ProductDto> getAllProducts(String searchKey) {
-        if (searchKey==null || searchKey.isBlank()) {
+        if (searchKey == null || searchKey.isBlank()) {
             List<Product> productList = productRepository.findAll();
+            int length = productList.size();
+            if (length == 0) {
+                logger.error("No products found");
+                throw new CustomException("No products to show", HttpStatus.NOT_FOUND);
+            }
             List<ProductDto> productDtoList = productList.stream()
                     .map(ProductUtils::productDaoToDto)
                     .toList();
@@ -41,6 +46,8 @@ public class ProductService {
         } else {
             logger.info("Search key {}", searchKey);
             List<Product> searchedProducts = productRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(searchKey, searchKey);
+            if (searchedProducts.isEmpty())
+                throw new CustomException("No Products found", HttpStatus.NOT_FOUND);
             logger.info("Found products list of size {}", searchedProducts.size());
             return searchedProducts.stream()
                     .map(ProductUtils::productDaoToDto)
@@ -66,9 +73,9 @@ public class ProductService {
             logger.error("Tried to add product wih duplicate id");
             throw new CustomException(String.format("Product with id %s already exists", product.getId()), HttpStatus.CONFLICT);
         }
-        productRepository.save(product);
+        product = productRepository.save(product);
         logger.info("Product saved");
-        return getProductById(product.getId());
+        return ProductUtils.productDaoToDto(product);
     }
 
     public List<ProductDto> saveAllProducts(List<ProductDto> productDtoList) {
@@ -116,6 +123,7 @@ public class ProductService {
         logger.info("Service updateProduct: Product with id {} updated", id);
         return getProductById(id);
     }
+
     public ResponseEntity<Object> bulkExport(String fileType) {
         List<ProductDto> productDtoList = getAllProducts("");
         if (CollectionUtils.isEmpty(productDtoList)) {
