@@ -18,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.anyString;
@@ -34,6 +35,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WebMvcTest(MainController.class)
+@TestPropertySource(properties = {"spring.data.mongodb.uri=tempValue"})
 class MainControllerTest {
     @Autowired
     MockMvc mockMvc;
@@ -47,9 +49,7 @@ class MainControllerTest {
     void testGetAllProductsSuccess() throws Exception {
         List<ProductDto> productDtoList = List.of(new ProductDto(), new ProductDto());
         when(productService.getAllProducts(anyString())).thenReturn(productDtoList);
-/*
-approach one
- */
+
         this.mockMvc.perform(get("/show_products"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
@@ -104,10 +104,5 @@ approach one
         ResponseEntity<ProductDto> responseEntity = mainController.updateProduct(productDto, "123");
 
         Assertions.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-        /*
-        approach 2
-        this.mockMvc.perform(put("/update/123"))
-                .andExpect(status().is2xxSuccessful());
-         */
     }
 }

@@ -17,7 +17,6 @@ private static final Logger logger = LoggerFactory.getLogger(CustomImportMapping
     }
     @Override
     public T populateNewBean(String[] line) throws CsvBeanIntrospectionException{
-        // Manually map CSV columns to Product fields and create a Product object
         ProductDto productDto = new ProductDto();
         productDto.setName(line[0]);
         productDto.setDescription(line[1]);

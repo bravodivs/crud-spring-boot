@@ -20,7 +20,6 @@ import java.util.List;
 @Component
 public class XmlExporter {
     private final Logger logger = LoggerFactory.getLogger(XmlExporter.class);
-    private File file;
     @Value("${file.defaultExportName}")
     private String defaultFileNameTemplate;
     @Value("${file.dateFormat}")
@@ -28,9 +27,8 @@ public class XmlExporter {
 
     public File export(List<ProductDto> productDtoList) {
         String filename = getExportFileName();
-        file = new File(filename);
+        File file = new File(filename);
 
-//: try change <images><image>...</images>
         try {
             if (file.createNewFile()) {
                 logger.info("File created with name {}", filename);

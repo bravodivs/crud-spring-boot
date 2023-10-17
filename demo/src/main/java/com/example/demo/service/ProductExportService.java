@@ -31,7 +31,6 @@ import static com.example.demo.constants.ProductConstants.*;
 
 @Service
 public class ProductExportService {
-
     private final Logger logger = LoggerFactory.getLogger(ProductExportService.class);
     private File file;
     private InputStreamResource inputStreamResource;
@@ -45,11 +44,6 @@ public class ProductExportService {
     private String dateFormat;
     private String fileExtension;
 
-    /*
-    return the reponse entity which will have the file and inputstreamresource.
-    delete the file here after sending response.
-    based on type, call method, which will call apt util method for exporting.
-     */
     public ResponseEntity<Object> exportHandler(List<ProductDto> productDtoList, String fileType) {
         ResponseEntity<Object> responseEntity;
         switch (fileType.toLowerCase()) {
@@ -79,14 +73,14 @@ public class ProductExportService {
     }
 
     public ResponseEntity<Object> exportCsv(List<String[]> dataArray) {
-        this.fileExtension=".csv";
+        this.fileExtension = ".csv";
         file = CsvExporterUtil.export(dataArray, getExportFileName());
         HttpHeaders httpHeaders = prepareHeaderResponse(CSV);
         return new ResponseEntity<>(inputStreamResource, httpHeaders, HttpStatus.OK);
     }
 
     public ResponseEntity<Object> exportJson(List<ProductDto> productDtoList) {
-        this.fileExtension=".json";
+        this.fileExtension = ".json";
         file = JsonExporterUtil.export(productDtoList, getExportFileName());
         HttpHeaders httpHeaders = prepareHeaderResponse(JSON);
         return new ResponseEntity<>(inputStreamResource, httpHeaders, HttpStatus.OK);
@@ -146,7 +140,7 @@ public class ProductExportService {
         } catch (Exception e) {
             throw new CustomException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        logger.info("Set header {}",httpHeaders);
+        logger.info("Set header {}", httpHeaders);
         return httpHeaders;
     }
 

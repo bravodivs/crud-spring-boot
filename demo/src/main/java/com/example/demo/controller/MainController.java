@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-
 import com.example.demo.model.ProductDto;
 import com.example.demo.service.ProductService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -40,7 +39,7 @@ public class MainController {
     }
 
     @PutMapping(value = "/update/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ProductDto> updateProduct(@RequestBody ProductDto productDto , @PathVariable String id) {
+    public ResponseEntity<ProductDto> updateProduct(@RequestBody ProductDto productDto, @PathVariable String id) {
         return new ResponseEntity<>(productService.updateProduct(id, productDto), HttpStatus.CREATED);
     }
 
@@ -56,8 +55,7 @@ public class MainController {
     }
 
     @PostMapping(value = "/bulkImport")
-    public ResponseEntity<Object> importFile(@RequestParam("file") MultipartFile file){
-     return productService.bulkImport(file);
+    public ResponseEntity<Object> importFile(@RequestParam("file") MultipartFile file) {
+        return productService.bulkImport(file);
     }
-
 }

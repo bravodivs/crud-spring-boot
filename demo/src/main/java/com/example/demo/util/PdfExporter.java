@@ -21,7 +21,6 @@ import java.util.List;
 public class PdfExporter {
     private static final Logger logger = LoggerFactory.getLogger(PdfExporter.class);
     private List<ProductDto> productDtoList;
-    private File file;
 
     private void writeTableHeader(PdfPTable table) {
         PdfPCell cell = new PdfPCell();
@@ -72,7 +71,7 @@ public class PdfExporter {
     public File export(List<ProductDto> productDtoList) throws DocumentException {
         this.productDtoList = productDtoList;
         String filename = getExportFileName();
-        file = new File(filename);
+        File file = new File(filename);
 
         try (Document document = new Document(PageSize.A4.rotate())) {
             if (file.createNewFile()) {

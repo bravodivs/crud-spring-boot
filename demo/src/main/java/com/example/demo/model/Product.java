@@ -11,13 +11,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 import java.util.List;
 
-
 @XmlRootElement(name = "product")
 @Getter
 @Setter
 @Document(collection = "commerce")
 public class Product {
-
     @Id
     private String id;
 

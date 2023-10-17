@@ -26,7 +26,6 @@ import static com.example.demo.constants.ProductConstants.CSV_CONTENT_TYPE;
 @Service
 public class ProductImportService {
     private final Logger logger = LoggerFactory.getLogger(ProductImportService.class);
-    private File file;
     private Path destinationPath;
     @Value("${file.upload-dir}")
     @Setter
@@ -39,14 +38,12 @@ public class ProductImportService {
         if (!Objects.equals(multipartFile.getContentType(), CSV_CONTENT_TYPE))
             throw new CustomException("Wrong file format content type", HttpStatus.BAD_REQUEST);
 
-        if(!StringUtils.endsWithIgnoreCase(multipartFile.getOriginalFilename(), ".csv"))
+        if (!StringUtils.endsWithIgnoreCase(multipartFile.getOriginalFilename(), ".csv"))
             throw new CustomException("Wrong file format", HttpStatus.BAD_REQUEST);
 
-        // Get the original filename of the uploaded file
         String originalFilename = multipartFile.getOriginalFilename();
 
         try {
-            // Build an absolute path for the destination file
             destinationPath = Paths.get(uploadDirectory, originalFilename);
             logger.info("File name {}", originalFilename);
             multipartFile.transferTo(destinationPath);
@@ -57,7 +54,7 @@ public class ProductImportService {
 
     }
 
-    public List<ProductDto> readCsv(MultipartFile multipartFile){
+    public List<ProductDto> readCsv(MultipartFile multipartFile) {
         importFile(multipartFile);
 
         CustomImportMappingStrategy<ProductDto> mappingStrategy = new CustomImportMappingStrategy<>();
@@ -75,8 +72,7 @@ public class ProductImportService {
             throw new CustomException(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
         }
 
-//        in order to delete, multipart should be converted to a file.
-        file = new File(destinationPath.toUri());
+        File file = new File(destinationPath.toUri());
         file.deleteOnExit();
         logger.info("File deleted");
 

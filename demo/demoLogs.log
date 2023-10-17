@@ -1,0 +1,23 @@
+2023-10-17T13:21:14.381+05:30  INFO 24432 --- [main] c.e.demo.controller.MainControllerTest   : Starting MainControllerTest using Java 17.0.8.1 with PID 24432 (started by DevanshuVerma in C:\Users\DevanshuVerma\Documents\BE\first demo\demo)
+2023-10-17T13:21:14.383+05:30  INFO 24432 --- [main] c.e.demo.controller.MainControllerTest   : No active profile set, falling back to 1 default profile: "default"
+2023-10-17T13:21:15.269+05:30  INFO 24432 --- [main] com.example.demo.DemoApplication         : Mongodb Url received- tempValue
+2023-10-17T13:21:15.684+05:30  INFO 24432 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2023-10-17T13:21:15.873+05:30  INFO 24432 --- [main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2023-10-17T13:21:15.874+05:30  INFO 24432 --- [main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2023-10-17T13:21:15.876+05:30  INFO 24432 --- [main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2023-10-17T13:21:15.908+05:30  INFO 24432 --- [main] c.e.demo.controller.MainControllerTest   : Started MainControllerTest in 1.911 seconds (process running for 3.916)
+2023-10-17T13:21:16.254+05:30 ERROR 24432 --- [main] c.e.d.exception.GlobalExceptionHandler   : Error encountered 404 NOT_FOUND with message No products found
+2023-10-17T13:21:16.620+05:30 ERROR 24432 --- [main] c.e.d.exception.GlobalExceptionHandler   : Invalid argument(s) exception encountered - null
+2023-10-17T13:21:16.781+05:30  INFO 24432 --- [main] c.e.demo.service.ProductImportService    : File name test.csv
+2023-10-17T13:21:16.785+05:30  INFO 24432 --- [main] c.e.demo.service.ProductImportService    : File transferred to location C:\users\DevanshuVerma\Documents\BE\first demo\demo\uploads\test.csv
+2023-10-17T13:21:16.849+05:30  INFO 24432 --- [main] c.e.demo.service.ProductImportService    : File deleted
+2023-10-17T13:21:16.869+05:30  INFO 24432 --- [main] c.e.demo.service.ProductImportService    : File name error.csv
+2023-10-17T13:21:16.872+05:30  INFO 24432 --- [main] c.e.demo.service.ProductImportService    : File transferred to location C:\users\DevanshuVerma\Documents\BE\first demo\demo\uploads\error.csv
+2023-10-17T13:21:16.974+05:30  INFO 24432 --- [main] c.example.demo.service.ProductService    : List of products with size 1 returned
+2023-10-17T13:21:16.979+05:30  INFO 24432 --- [main] c.example.demo.service.ProductService    : Product saved
+2023-10-17T13:21:16.989+05:30  INFO 24432 --- [main] c.example.demo.service.ProductService    : Search key 2
+2023-10-17T13:21:16.989+05:30  INFO 24432 --- [main] c.example.demo.service.ProductService    : Found products list of size 1
+2023-10-17T13:21:16.998+05:30  INFO 24432 --- [main] c.example.demo.service.ProductService    : Product saved
+2023-10-17T13:21:17.004+05:30 ERROR 24432 --- [main] c.example.demo.service.ProductService    : Product not found with id 999
+2023-10-17T13:21:17.008+05:30  INFO 24432 --- [main] c.example.demo.service.ProductService    : Search key nonexistent
+2023-10-17T13:21:17.013+05:30 ERROR 24432 --- [main] c.example.demo.service.ProductService    : Tried to add product wih duplicate id
